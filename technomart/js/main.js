@@ -44,11 +44,13 @@ function getIsElectric() {
 }
 
 for (let i = 0; i < arrShopCart.length; i++) {
+    let price = getPrice();
     arrShopCart[i] = {
         url: getRandomUrl(),
         brand: getRandomBrand(),
         title: getRandomTitle(),
-        price: getPrice(),
+        price: price,
+        discount: getDiscount(price),
         flag: getFlag(),
         isElectric: getIsElectric()
     }
