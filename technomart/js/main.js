@@ -1,26 +1,34 @@
 "use strict";
 
-var arrShopCart = new Array(6);
-var numberShopCart = 0;
+var SHOP_CART_COUNT = 6;
+
+var arrBrand = ['BOSCH', 'Makita', 'Vagner', 'Mega', 'Proline'];
+var arrUrl = ['bosch-2000', 'bosch-3000', 'bosch-6000', 'bosch-9000', 'makita-td-110'];
+var arrTitle = [
+	'Перфоратор BOSCH BFG 2000',
+	'Перфоратор BOSCH BFG 3000',
+	'Перфоратор BOSCH BFG 6000',
+	'Перфоратор BOSCH BFG 9000',
+	'Шуруповерт Makita TD-110'
+	];
+var arrFlag = ['new', 'promo', ''];
+
+// var arrShopCart = new Array(6);
+var arrShopCarts = [];
 
 function getRandomNumber(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function getRandomUrl() {
-    let arrUrl = ['bosch-2000', 'bosch-3000', 'bosch-6000', 'bosch-9000', 'makita-td-110'];
     return 'img/catalog/' + arrUrl[getRandomNumber(0, arrUrl.length)] + '.jpg';
 }
 
-function getRandomBrand() {
-    let arrBrand = ['BOSCH', 'Makita', 'Vagner', 'Mega', 'Proline'];
+function getRandomBrand() {    
     return arrBrand[getRandomNumber(0, arrBrand.length)];
 }
 
 function getRandomTitle() {
-    let arrTitle = ['Перфоратор BOSCH BFG 2000', 'Перфоратор BOSCH BFG 3000', 'Перфоратор BOSCH BFG 6000', 'Перфоратор BOSCH BFG 9000', 'Шуруповерт Makita TD-110'];
     return arrTitle[getRandomNumber(0, arrTitle.length)];
 }
 
@@ -34,25 +42,33 @@ function getDiscount(price) {
 }
 
 function getFlag() {
-    let arrFlag = ['new', 'promo'];
     return arrFlag[getRandomNumber(0, arrFlag.length)];
 }
 
 function getIsElectric() {
-    let arrIsElectric = [true, false]
-    return arrIsElectric[getRandomNumber(0, arrIsElectric.length)];
+    return Math.random() < 0.5;
 }
 
-for (let i = 0; i < arrShopCart.length; i++) {
-    let price = getPrice();
-    arrShopCart[i] = {
-        url: getRandomUrl(),
-        brand: getRandomBrand(),
-        title: getRandomTitle(),
-        price: price,
-        discount: getDiscount(price),
-        flag: getFlag(),
-        isElectric: getIsElectric()
-    }
+function createShopCart() {
+	var price = getPrice();
+
+	return {
+		url: getRandomUrl(),
+		brand: getRandomBrand(),
+		title: getRandomTitle(),
+		price: price,
+		discount: getDiscount(price),
+		flag: getFlag(),
+		isElectric: getIsElectric()
+	};
 }
-console.log(arrShopCart);
+
+function createShopCarts() {	
+	for (var i = 0; i < SHOP_CART_COUNT; i++) {		
+		var itCard = createShopCart();
+		arrShopCarts.push(itCard);
+	}
+}
+
+createShopCarts();
+console.log(arrShopCarts);
