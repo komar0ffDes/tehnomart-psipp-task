@@ -12,8 +12,6 @@ var arrTitle = [
 	'Шуруповерт Makita TD-110'
 	];
 var arrFlag = ['new', 'promo', ''];
-
-// var arrShopCart = new Array(6);
 var arrShopCarts = [];
 
 function getRandomNumber(min, max) {
@@ -33,7 +31,7 @@ function getRandomTitle() {
 }
 
 function getPrice() {
-    return getRandomNumber(5000,20000);
+    return Math.round(getRandomNumber(5000,20000)/100)*100;
 }
 
 function getDiscount(price) {
@@ -71,4 +69,25 @@ function createShopCarts() {
 }
 
 createShopCarts();
-console.log(arrShopCarts);
+
+var catalogItem = document.querySelector('#catalog-item').content.querySelector('.catalog-item');
+
+var catalogFragment = document.createDocumentFragment();
+
+function generateShopCard(url, title, price, discount) {
+	var itShopCard = catalogItem.cloneNode(true);
+	itShopCard.querySelector('.image>img').setAttribute('src', url);
+	itShopCard.querySelector('.item-title').textContent = title;
+	itShopCard.querySelector('.price').textContent = price + ' Р.';
+	itShopCard.querySelector('.discount').textContent = discount;
+	return itShopCard;
+}
+
+function generateShopCards() {
+	for(var i = 0; i < SHOP_CART_COUNT; i++) {
+		catalogFragment.appendChild(generateShopCard(arrShopCarts[i].url, arrShopCarts[i].title, arrShopCarts[i].price, arrShopCarts[i].discount));
+	}
+	document.querySelector('.catalog-list').appendChild(catalogFragment);
+}
+
+generateShopCards();
