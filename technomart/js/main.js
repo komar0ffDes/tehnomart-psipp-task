@@ -61,16 +61,18 @@ function createShopCart() {
 	};
 }
 
-function createShopCarts() {	
+function createShopCarts(array) {	
 	for (var i = 0; i < SHOP_CART_COUNT; i++) {		
 		var itCard = createShopCart();
-		arrShopCarts.push(itCard);
+		array.push(itCard);
 	}
 }
 
-createShopCarts();
+createShopCarts(arrShopCarts);
+console.log(arrShopCarts);
 
 var catalogItem = document.querySelector('#catalog-item').content.querySelector('.catalog-item');
+var flagNew = document.querySelector('#flag-new').content.querySelector('.flag-new');
 
 var catalogFragment = document.createDocumentFragment();
 
@@ -83,11 +85,62 @@ function generateShopCard(url, title, price, discount) {
 	return itShopCard;
 }
 
-function generateShopCards() {
+function generateShopCards(array) {
+	document.querySelector('.catalog-list').innerHTML = "";
 	for(var i = 0; i < SHOP_CART_COUNT; i++) {
-		catalogFragment.appendChild(generateShopCard(arrShopCarts[i].url, arrShopCarts[i].title, arrShopCarts[i].price, arrShopCarts[i].discount));
+		catalogFragment.appendChild(generateShopCard(array[i].url, array[i].title, array[i].price, array[i].discount));
 	}
 	document.querySelector('.catalog-list').appendChild(catalogFragment);
 }
 
-generateShopCards();
+generateShopCards(arrShopCarts);
+
+function compareNumericByPrice(a, b) {
+	if (a.price > b.price) return 1;
+	if (a.price == b.price) return 0;
+	if (a.price < b.price) return -1;
+}
+
+function sortArrayByPrice(array) {
+	var newArray = array.slice();
+	newArray.sort(compareNumericByPrice);
+	return newArray;
+}
+
+var buttonSortByPrice = document.querySelector('.by-price');
+buttonSortByPrice.addEventListener('click', onClickButtonSortByPrice, false);
+
+function onClickButtonSortByPrice(evt) {
+	evt.preventDefault();
+	generateShopCards(sortArrayByPrice(arrShopCarts));
+	buttonSortByPrice.removeEventListener('click', onClickButtonSortByPrice, false);
+}
+
+console.log(sortArrayByPrice(arrShopCarts));
+
+var modal = document.querySelector('.modal-write');
+var buttonContacts = document.querySelector('.contacts-button').addEventListener('click', onClickButtonContacts, false);
+
+var buttonModalClose = document.querySelector('.modal-close');
+
+function onClickButtonModalClose(evt) {
+	evt.preventDefault();
+	modal.classList.value = 'modal modal-write';
+}
+
+function onEscKeyClick(evt) {
+	if (evt.key === 'Escape') {
+		evt.preventDefault();
+		modal.classList.value = 'modal modal-write';
+	}
+}
+
+function onClickButtonContacts(evt) {
+	evt.preventDefault();
+	modal.classList.value += 'modal-show';
+	buttonModalClose.addEventListener("click", onClickButtonModalClose, false);
+	document.addEventListener('keydown', onEscKeyClick, false);
+}
+
+
+
